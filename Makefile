@@ -2,9 +2,21 @@ VENV		= venv
 ACTIVATE	= . ./${VENV}/bin/activate
 ARGS		= --varsfile test/testvars.yml --varsfile test/testvars2.yml test/testtemplate.j2
 
+.PHONY: usage
+usage:
+	run              run script used test files
+	run ARGS=...     run script used ARGS
+	build            build venv directory
+	clean            clean venv directory and files
+	lint             run lint use flake8
+	test             run test script
+
 .PHONY: run
 run: activate
 	${ACTIVATE} && pyrender/pyrender.py ${ARGS}
+
+.PHONY: build
+build: activate
 
 activate: ${VENV}
 	@ln -s -v ./${VENV}/bin/activate
@@ -21,7 +33,7 @@ clean:
 
 .PHONY: lint
 lint:
-	@${ACTIVATE} && flake8 pyrender/*.py
+	@${ACTIVATE} && flake8 pyrender/*.py || :
 
 .PHONY: test
 test:
