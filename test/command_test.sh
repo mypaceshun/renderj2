@@ -14,7 +14,7 @@ main() {
   tmpfile=test/testtemplate.j2
   varfile=test/testvars.yml
   varfile2=test/testvars2.yml
-  cmdexec "${CMD} ${tmpfile}"
+  failcmdexec "${CMD} ${tmpfile}"
   failcmdexec "${CMD} nofile"
   cmdexec "${CMD} --help"
   cmdexec "${CMD} --varsfile ${varfile} ${tmpfile}"
