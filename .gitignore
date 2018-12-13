@@ -3,3 +3,5 @@ activate
 *env
 **/__pycache__
 pyrender.egg-info
+build
+dist
