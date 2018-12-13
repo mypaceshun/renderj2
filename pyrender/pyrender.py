@@ -2,25 +2,27 @@
 
 import click
 import yaml
+from jinja2 import Environment, FileSystemLoader
 
 
 @click.command()
-@click.option('-v', '--varsfile',type=click.File('r'), multiple=True,
+@click.option('-v', '--varsfile', type=click.File('r'), multiple=True,
               help='vars file path for jinja2')
-@click.argument('template', type=click.File('r'))
+@click.argument('template', type=click.Path(exists=True))
 def cmd(template, varsfile):
+    env = Environment(loader=FileSystemLoader('./', encoding='utf8'))
+    _template = env.get_template(template)
 
-    print(template.name)
-    for line in template:
-        print(line)
+    vars = {}
+    for file in varsfile:
+        vars.update(yaml.load(file))
 
-    for var in varsfile:
-        print(var.name)
-        data = yaml.load(var)
-        print(data)
+    print(_template.render(vars))
+
 
 def main():
     cmd()
+
 
 if __name__ == '__main__':
     main()

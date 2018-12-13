@@ -4,19 +4,16 @@ ARGS		= --varsfile test/testvars.yml --varsfile test/testvars2.yml test/testtemp
 
 .PHONY: usage
 usage:
-	run              run script used test files
-	run ARGS=...     run script used ARGS
-	build            build venv directory
-	clean            clean venv directory and files
-	lint             run lint use flake8
-	test             run test script
+	@echo "run              run script used test files"
+	@echo "run ARGS=...     run script used ARGS"
+	@echo "build            build venv directory"
+	@echo "clean            clean venv directory and files"
+	@echo "lint             run lint use flake8"
+	@echo "test             run test script"
 
 .PHONY: run
 run: activate
 	${ACTIVATE} && pyrender/pyrender.py ${ARGS}
-
-.PHONY: build
-build: activate
 
 activate: ${VENV}
 	@ln -s -v ./${VENV}/bin/activate
