@@ -26,12 +26,15 @@ ${VENV}: requirements.txt
 .PHONY: clean
 clean:
 	rm -rf ${VENV}
-	rm activate
+	rm -rf activate
+	rm -rf build dist pyrender.egg-info
 
 .PHONY: lint
-lint:
+lint: activate
 	@${ACTIVATE} && flake8 pyrender/*.py || :
+	${ACTIVATE} && python setup.py flake8
 
 .PHONY: test
-test:
+test: activate
 	@${ACTIVATE} && test/command_test.sh
+	${ACTIVATE} && python setup.py check
