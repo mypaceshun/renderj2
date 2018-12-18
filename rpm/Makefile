@@ -10,6 +10,7 @@ usage:
 	@echo ""
 	@echo "Targets:"
 	@echo "  deploy       deploy scripts for rpmbuild"
+	@echo "  clean        clean directory"
 	@echo ""
 	@echo "PackageName: ${PACKAGE-NAME}"
 
@@ -36,3 +37,8 @@ version:
 
 README.md:
 	${CP} ../README.md .
+
+.PHONY: clean
+clean:
+	rm -rf SOURCES/*.tar.gz
+	rm -rf version README.md

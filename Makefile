@@ -55,6 +55,7 @@ clean:
 	rm -rf activate
 	rm -rf build dist pyrender.egg-info
 	cd docker && ${MAKE} clean
+	cd rpm && ${MAKE} clean
 
 .PHONY: lint
 lint: activate
