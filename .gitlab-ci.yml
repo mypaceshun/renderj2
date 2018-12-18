@@ -1,0 +1,13 @@
+stages:
+  - test
+  - build
+
+python-lint:
+  image: centos:7
+  script:
+    - uname -a
+    - pwd
+    - ls -alh
+    - make lint
+  stage: test
+  only: master
