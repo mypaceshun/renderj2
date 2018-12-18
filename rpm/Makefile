@@ -25,6 +25,7 @@ deploy: version README.md
 	${CP} ../LICENSE ${PACKAGE-NAME}/
 	${CP} ../README.md ${PACKAGE-NAME}/
 	${CP} ../version ${PACKAGE-NAME}/
+	rm -rvf ${PACKAGE-NAME}/**/__pycache__
 	tar zcf ${PACKAGE-NAME}.tar.gz ${PACKAGE-NAME}/
 	install -d -m 0755 SOURCES/
 	mv ${PACKAGE-NAME}.tar.gz SOURCES/
