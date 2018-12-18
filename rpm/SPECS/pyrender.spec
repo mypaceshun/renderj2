@@ -45,5 +45,5 @@ rm -rf %{buildroot}
 %attr(0755,root,root) %{_bindir}/pyrender
 
 %changelog
-* Thu Dec 18 2018 KAWAI Shun <shun@osstech.co.jp> - 1.0.0
+* Tue Dec 18 2018 KAWAI Shun <shun@osstech.co.jp> - 1.0.0
 - Initial release
