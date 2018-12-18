@@ -1,6 +1,10 @@
 DOCKER-IMAGE		= rpmbuild
 DOCKER-CONTAINER	= rpmbuild
+DOCKER-BUILDROOT	= /home/rpmbuilder
+VERSION			= ${shell cut -d . -f 1-2 ../version}
+RELEASE			= ${shell cut -d . -f 3 ../version}
 RPM-DIRECTORY		= rpm
+PRODUCT-DIRECTORY	= ../product/RPMS/
 
 .PHONY: usage
 usage:
@@ -14,11 +18,13 @@ usage:
 
 .PHONY: build
 build: deploy
-	docker build -t ${DOCKER-IMAGE} .
+	docker build -t ${DOCKER-IMAGE} . --build-arg rootdir="${DOCKER-BUILDROOT}"
 
 .PHONY: run
 run: build
 	docker run --name ${DOCKER-CONTAINER} ${DOCKER-IMAGE}
+	docker cp ${DOCKER-CONTAINER}:${DOCKER-BUILDROOT}/rpm/RPMS/x86_64/pyrender-${VERSION}-${RELEASE}.x86_64.rpm ${PRODUCT-DIRECTORY}
+	docker container rm ${DOCKER-CONTAINER}
 
 .PHONY: clean
 clean:
