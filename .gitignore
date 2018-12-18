@@ -5,3 +5,4 @@ activate
 pyrender.egg-info
 build
 dist
+sandbox
