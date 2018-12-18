@@ -7,12 +7,20 @@ BINDIR		= /bin
 
 .PHONY: usage
 usage:
-	@echo "run              run script used test files"
-	@echo "run ARGS=...     run script used ARGS"
-	@echo "build            build venv directory"
-	@echo "clean            clean venv directory and files"
-	@echo "lint             run lint use flake8"
-	@echo "test             run test script"
+	@echo "Usage: ${MAKE} TARGET"
+	@echo ""
+	@echo "  run              run script used test files"
+	@echo "    ARGS=...       run script used ARGS"
+	@echo "  dev              build venv directory"
+	@echo "  clean            clean venv directory and files"
+	@echo "  lint             run lint use flake8"
+	@echo "  test             run test script"
+	@echo ""
+	@echo "  install          install pyrender command"
+	@echo "    DISTDIR=...    install target directory"
+	@echo ""
+	@echo "  rpm              make rpm package used docker"
+
 
 .PHONY: install
 install:
@@ -43,6 +51,9 @@ wheel: activate
 .PHONY: run
 run: activate
 	${ACTIVATE} && pyrender/pyrender.py ${ARGS}
+
+.PHONY: dev
+dev: activate
 
 activate: ${VENV}
 	@ln -s -v ./${VENV}/bin/activate
