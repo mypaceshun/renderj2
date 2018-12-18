@@ -1,7 +1,7 @@
 VENV		= pyrenderenv
 ACTIVATE	= . ./${VENV}/bin/activate
 ARGS		= --varsfile test/testvars.yml --varsfile test/testvars2.yml test/testtemplate.j2
-DISTDIR		= ./sandbox
+DISTDIR		=
 LIBDIR		= /var/lib
 BINDIR		= /bin
 
