@@ -2,7 +2,7 @@
 %define dist_var	%(cut -d . -f 1-2 version)
 %define dist_rel	%(cut -d . -f 3 version)
 
-%define _python_bytecompile_errors_terminate_build 0
+%define __python python3
 
 Summary: simple render script used jinja2
 Name: %{?name_prefix}%{dist_name}
