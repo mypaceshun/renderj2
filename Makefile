@@ -27,9 +27,12 @@ install:
 
 
 .PHONY: rpm
-rpm:
+rpm: product
 	cd rpm && ${MAKE} deploy
 	cd docker && ${MAKE} run
+
+product:
+	mkdir -p product/RPMS
 
 .PHONY: wheel
 wheel: activate
