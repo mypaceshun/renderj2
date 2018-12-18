@@ -18,7 +18,7 @@ build: deploy
 
 .PHONY: run
 run: build
-	docker run --name ${DOCKER-CONTAINER} --rm ${DOCKER-IMAGE}
+	docker run --name ${DOCKER-CONTAINER} ${DOCKER-IMAGE}
 
 .PHONY: clean
 clean:

@@ -6,7 +6,8 @@ RUN yum -y install epel-release
 RUN yum -y install rpm-build rpmdevtools gcc make tar openssl-devel openldap-devel tree
 RUN yum -y install python-devel python34-devel python36-devel
 RUN yum -y groupinstall "Development Tools"
-ADD rpm.tar.gz /
-RUN chown -R root:root /rpm
+RUN mkdir -p /home/rpmbuilder
+ADD rpm.tar.gz /home/rpmbuilder
+RUN chown -R root:root /home/rpmbuilder/rpm
 
-CMD ["/rpm/CMD.sh"]
+CMD ["/home/rpmbuilder/rpm/CMD.sh"]
