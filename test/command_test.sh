@@ -2,7 +2,7 @@
 
 set -u
 
-CMD=pyrender/pyrender.py
+CMD=renderj2/renderj2.py
 LOG=test.log
 errcount=0
 successcount=0
@@ -24,6 +24,9 @@ main() {
 
   echo "success   : ${successcount}"
   echo "error     : ${errcount}"
+  if [ ${errcount} -ne 0 ]; then
+    exit 1
+  fi
 }
 
 loginit() {
