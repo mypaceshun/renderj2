@@ -2,7 +2,7 @@
 activate
 *env
 **/__pycache__
-pyrender.egg-info
+*.egg-info
 build
 dist
 sandbox
