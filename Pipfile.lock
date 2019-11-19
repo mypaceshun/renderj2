@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c4ae11ef8c2943ccbf21ede2338ab16db435fe2ea308e548b4c85df11711820b"
+            "sha256": "0f590d415a9b7f68b3389c827e4ec671f0df4d454cdb3673467467df404d6f77"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -270,6 +270,9 @@
                 "sha256:881c4c157e45f30af185c1ffe8d549d48ac9127433f2c380c24b84572ad66297"
             ],
             "version": "==2.4.2"
+        },
+        "pyrender": {
+            "path": "."
         },
         "readme-renderer": {
             "hashes": [

@@ -33,6 +33,10 @@ build:
 	${PIPENV} run python setup.py bdist_wheel sdist --format=gztar,zip
 	${PIPENV} run twine check dist/*
 
+.PHONY: upload
+upload:
+	${MAKE} -s build
+	${PIPENV} run twine upload --repository ${TARGET} dist/*.tar.gz dist/*.whl
 
 .PHONY: install
 install:
