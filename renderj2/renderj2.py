@@ -15,7 +15,7 @@ def cmd(template, varsfile):
 
     vars = {}
     for file in varsfile:
-        vars.update(yaml.load(file))
+        vars.update(yaml.safe_load(file))
 
     print(_template.render(vars))
 
