@@ -4,6 +4,8 @@ ARGS		= --varsfile test/testvars.yml --varsfile test/testvars2.yml test/testtemp
 DISTDIR		=
 LIBDIR		= /var/lib
 BINDIR		= /bin
+PIPENV          = pipenv
+TARGET          = testpypi
 
 .PHONY: usage
 usage:
@@ -16,10 +18,20 @@ usage:
 	@echo "  lint             run lint use flake8"
 	@echo "  test             run test script"
 	@echo ""
+	@echo "  build            build wheel package and tar archive"
+	@echo "  upload           upload to ${TARGET}"
+	@echo "    TARGET=pypi    upload to pypi"
+	@echo ""
 	@echo "  install          install pyrender command"
 	@echo "    DISTDIR=...    install target directory"
 	@echo ""
 	@echo "  rpm              make rpm package used docker"
+
+.PHONY: build
+build:
+	${MAKE} -s clean
+	${PIPENV} run python setup.py bdist_wheel sdist --format=gztar,zip
+	${PIPENV} run twine check dist/*
 
 
 .PHONY: install

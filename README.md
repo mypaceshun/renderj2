@@ -17,12 +17,12 @@ jinja2を使った簡単なテンプレートレンダー
 
 ファイル出力する機能はそのうち追加予定。
 
-
 [Jinja2公式ドキュメント](http://jinja.pocoo.org/docs/2.10/templates/)
 
 # 開発
 
 ## Require
+
   * python3 (venvを利用)
   * docker (rpmパッケージのビルドに利用)
 
@@ -37,8 +37,6 @@ $ make test
 ## ビルド
 
 ``` console
-$ make rpm
+$ make build
 ```
-
-`docker`を立ち上げ`docker`内で`rpm-build`を実行。
-生成されたrpmパッケージは`./product/RPMS`ディレクトリ内に置かれる。
+wheelパッケージ、tar.gzアーカイブ, zipアーカイブの3つが`dist`ディレクトリ内に作成される。
