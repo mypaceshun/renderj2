@@ -1,5 +1,10 @@
 # pyrender
 
+[![PyPI - Version](https://img.shields.io/pypi/v/renderj2)](https://pypi.org/project/renderj2/)
+[![Test](https://github.com/mypaceshun/renderj2/actions/workflows/main.yml/badge.svg)](https://github.com/mypaceshun/renderj2/actions/workflows/main.yml)
+[![codecov](https://codecov.io/gh/mypaceshun/renderj2/graph/badge.svg?token=msY4HsQHg6)](https://codecov.io/gh/mypaceshun/renderj2)
+[![Downloads](https://static.pepy.tech/badge/renderj2)](https://pepy.tech/project/renderj2)
+
 jinja2を使った簡単なテンプレートレンダー
 パッケージングの練習に利用
 
