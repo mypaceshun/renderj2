@@ -1,4 +1,0 @@
-PyYAML
-jinja2
-click
-flake8

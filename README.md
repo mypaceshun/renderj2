@@ -7,7 +7,7 @@ jinja2を使った簡単なテンプレートレンダー
 # 使い方
 
 ``` console
-# pyrender --vars vars.yml template.j2
+# renderj2 --vars vars.yml template.j2
 ```
 
 上記のように実行すると、Jinja2の形式で書かれた`tempalte.j2`を
@@ -23,20 +23,17 @@ jinja2を使った簡単なテンプレートレンダー
 
 ## Require
 
-  * python3 (venvを利用)
-  * docker (rpmパッケージのビルドに利用)
+  * python3
+  * Poetry
 
 ## テスト
 
 ``` console
-$ make test
+$ poetry poe test
 ```
-
-`make lint`で`flake8`を走らせることもできる
 
 ## ビルド
 
 ``` console
-$ make build
+$ poetry build
 ```
-wheelパッケージ、tar.gzアーカイブ, zipアーカイブの3つが`dist`ディレクトリ内に作成される。
