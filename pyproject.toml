@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "renderj2"
-version = "1.2.0"
+version = "0.0.0"
 description = "Simplate template rensder usesd jinja2"
 authors = ["KAWAI Shun <mypaceshun@gmail.com>"]
 license = "MIT"
@@ -63,6 +63,14 @@ module = [
 ]
 ignore_missing_imports = true
 
+
+[tool.poetry-dynamic-versioning]
+enable = true
+[tool.poetry-dynamic-versioning.substitution]
+folders = [
+  { path = "src" }
+]
+
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
