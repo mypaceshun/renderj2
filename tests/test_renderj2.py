@@ -111,3 +111,33 @@ Hello shun1 and shun2!
     assert result.exit_code == 0
     stdout = result.stdout
     assert stdout.strip() == expect_string.strip()
+
+
+def test_success_template_render_output_to_file(tmp_path):
+    template_path = Path(tmp_path, "success_template_with_variables")
+    template_string = """test template string with variables
+Hello {{ name }}!
+"""
+    template_path.write_text(template_string)
+
+    variable_path = Path(tmp_path, "variable.yml")
+    variable_string = """---
+name: shun
+"""
+    variable_path.write_text(variable_string)
+
+    expect_string = """test template string with variables
+Hello shun!
+"""
+
+    output_path = Path(tmp_path, "success_output")
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cmd,
+        ["-v", str(variable_path), "--output", str(output_path), str(template_path)],
+    )
+    assert result.exit_code == 0
+    stdout = result.stdout
+    assert stdout.strip() == ""
+    assert output_path.read_text().strip() == expect_string.strip()

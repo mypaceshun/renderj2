@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from logging import getLogger
 from pathlib import Path
+from typing import Optional
 
 import click
 import click_log
@@ -14,8 +15,6 @@ click_log.basic_config(logger)
 
 
 @click.command()
-@click.help_option("-h", "--help")
-@click.version_option(__version__, "-V", "--version", package_name=PACKAGE_NAME)
 @click.option(
     "-v",
     "--varsfile",
@@ -23,9 +22,14 @@ click_log.basic_config(logger)
     multiple=True,
     help="vars file path for jinja2",
 )
+@click.option(
+    "-o", "--output", "output_file", type=click.Path(exists=False), help="output file"
+)
 @click.argument("template_file", type=click.Path(exists=True))
 @click_log.simple_verbosity_option(logger, "--loglevel", show_default=True)
-def cmd(template_file: str, varsfile: list[str]) -> None:
+@click.help_option("-h", "--help")
+@click.version_option(__version__, "-V", "--version", package_name=PACKAGE_NAME)
+def cmd(template_file: str, varsfile: list[str], output_file: Optional[str]) -> None:
     """
     Rendre Jinja2 tempalte
     """
@@ -46,4 +50,9 @@ def cmd(template_file: str, varsfile: list[str]) -> None:
             yaml_dict = yaml.safe_load(fd)
             vars_dict.update(yaml_dict)
     logger.debug(f"Used vars dict {vars_dict}")
-    click.echo(template.render(vars_dict))
+    render_str = template.render(vars_dict)
+    if output_file is None:
+        click.echo(render_str)
+    else:
+        output_path = Path(output_file)
+        output_path.write_text(render_str)
