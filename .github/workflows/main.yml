@@ -1,0 +1,174 @@
+name: Test
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '*'
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  lint:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {name: '3.12', python: '3.12', os: ubuntu-latest}
+          - {name: '3.11', python: '3.11', os: ubuntu-latest}
+          - {name: '3.10', python: '3.10', os: ubuntu-latest}
+          - {name: '3.9', python: '3.9', os: ubuntu-latest}
+    steps:
+      - name: Run checkout
+        uses: actions/checkout@v4
+      - name: Run setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: 1.7.1
+      - name: Setup a local virtual environment
+        run: |
+          poetry config virtualenvs.create true --local
+          poetry config virtualenvs.in-project true --local
+      - name: Instasll poethepoet
+        run: poetry self add 'poethepoet[poetry_plugin]'
+      - name: Instasll poetry-dynamic-versioning
+        run: poetry self add 'poetry-dynamic-versioning[plugin]'
+      - name: Cache venv
+        uses: actions/cache@v3
+        with:
+          path: ./.venv
+          key: venv-${{ hashFiles('poetry.lock') }}
+      - name: Cache pypoetry
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry
+          key: cache-${{ hashFiles('poetry.lock') }}
+      - name: Install libraries
+        run: poetry install
+      - name: Run lint
+        run: poetry poe lint
+  test:
+    needs: lint
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {name: '3.12', python: '3.12', os: ubuntu-latest}
+          - {name: '3.11', python: '3.11', os: ubuntu-latest}
+          - {name: '3.10', python: '3.10', os: ubuntu-latest}
+          - {name: '3.9', python: '3.9', os: ubuntu-latest}
+    steps:
+      - name: Run checkout
+        uses: actions/checkout@v4
+      - name: Run setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: 1.7.1
+      - name: Setup a local virtual environment
+        run: |
+          poetry config virtualenvs.create true --local
+          poetry config virtualenvs.in-project true --local
+      - name: Instasll poethepoet
+        run: poetry self add 'poethepoet[poetry_plugin]'
+      - name: Instasll poetry-dynamic-versioning
+        run: poetry self add 'poetry-dynamic-versioning[plugin]'
+      - name: Cache venv
+        uses: actions/cache@v3
+        with:
+          path: ./.venv
+          key: venv-${{ hashFiles('poetry.lock') }}
+      - name: Cache pypoetry
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry
+          key: cache-${{ hashFiles('poetry.lock') }}
+      - name: Install libraries
+        run: poetry install
+      - name: Run test
+        run: poetry poe test
+      - name: upload codecov
+        uses: codecov/codecov-action@v3
+        with:
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+  release:
+    needs: test
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          REF: ${{ github.ref }}
+        run: echo "${REF##*/}"
+      - name: Run checkout
+        uses: actions/checkout@v4
+      - name: Run setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: 1.7.1
+      - name: Setup a local virtual environment
+        run: |
+          poetry config virtualenvs.create true --local
+          poetry config virtualenvs.in-project true --local
+      - name: Instasll poethepoet
+        run: poetry self add 'poethepoet[poetry_plugin]'
+      - name: Instasll poetry-dynamic-versioning
+        run: poetry self add 'poetry-dynamic-versioning[plugin]'
+      - name: Cache venv
+        uses: actions/cache@v3
+        with:
+          path: ./.venv
+          key: venv-${{ hashFiles('poetry.lock') }}
+      - name: Cache pypoetry
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry
+          key: cache-${{ hashFiles('poetry.lock') }}
+      - name: Install libraries
+        run: poetry install
+      - name: Build package
+        run: poetry build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-dists
+          path: dist
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: 'dist/*'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          draft: false
+  pypi-publish:
+    needs: release
+    name: PyPI Publish
+    permissions:
+      id-token: write
+    steps:
+      - if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          REF: ${{ github.ref }}
+        run: echo "${REF##*/}"
+      - name: Retrieve release distributions
+        uses: actions/download-artifact@v3
+        with:
+          name: release-dists
+          path: dist/
+      - name: Publish release distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
